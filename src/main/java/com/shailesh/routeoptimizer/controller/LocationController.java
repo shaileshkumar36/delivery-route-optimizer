@@ -1,10 +1,12 @@
 package com.shailesh.routeoptimizer.controller;
 
+import com.shailesh.routeoptimizer.dto.RouteResponse;
 import com.shailesh.routeoptimizer.entity.Location;
 import com.shailesh.routeoptimizer.repository.LocationRepository;
 import com.shailesh.routeoptimizer.service.DistanceService;
 import org.springframework.web.bind.annotation.*;
 import com.shailesh.routeoptimizer.service.RouteService;
+import com.shailesh.routeoptimizer.dto.RouteResponse;
 
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class LocationController {
     }
 
     @GetMapping("/optimize")
-    public List<Location> optimizeRoute() {
+    public RouteResponse optimizeRoute() {
         return routeService.optimizeRoute();
     }
 }
