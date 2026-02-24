@@ -2,8 +2,9 @@ package com.shailesh.routeoptimizer.controller;
 
 import com.shailesh.routeoptimizer.entity.Location;
 import com.shailesh.routeoptimizer.repository.LocationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.shailesh.routeoptimizer.service.DistanceService;
 import org.springframework.web.bind.annotation.*;
+import com.shailesh.routeoptimizer.service.RouteService;
 
 import java.util.List;
 
@@ -11,18 +12,35 @@ import java.util.List;
 @RequestMapping("/locations")
 public class LocationController {
 
-    @Autowired
-    private LocationRepository locationRepository;
+    private final LocationRepository locationRepository;
+    private final DistanceService distanceService;
+    private final RouteService routeService;
 
-    // Add Location
+    public LocationController(LocationRepository locationRepository,
+                              DistanceService distanceService,
+                              RouteService routeService) {
+        this.locationRepository = locationRepository;
+        this.distanceService = distanceService;
+        this.routeService = routeService;
+    }
+
     @PostMapping
     public Location addLocation(@RequestBody Location location) {
         return locationRepository.save(location);
     }
 
-    // Get All Locations
     @GetMapping
     public List<Location> getAllLocations() {
         return locationRepository.findAll();
+    }
+
+    @GetMapping("/test-distance")
+    public double testDistance() {
+        return distanceService.calculateDistance(10, 20, 15, 25);
+    }
+
+    @GetMapping("/optimize")
+    public List<Location> optimizeRoute() {
+        return routeService.optimizeRoute();
     }
 }
