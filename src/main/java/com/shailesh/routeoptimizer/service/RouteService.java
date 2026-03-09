@@ -5,6 +5,9 @@ import com.shailesh.routeoptimizer.entity.Location;
 import com.shailesh.routeoptimizer.repository.LocationRepository;
 import org.springframework.stereotype.Service;
 
+import com.shailesh.routeoptimizer.entity.RouteHistory;
+import com.shailesh.routeoptimizer.repository.RouteHistoryRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +17,14 @@ public class RouteService {
     private final LocationRepository locationRepository;
     private final DistanceService distanceService;
 
+    private final RouteHistoryRepository routeHistoryRepository;
+
     public RouteService(LocationRepository locationRepository,
-                        DistanceService distanceService) {
+                        DistanceService distanceService,
+                        RouteHistoryRepository routeHistoryRepository) {
         this.locationRepository = locationRepository;
         this.distanceService = distanceService;
+        this.routeHistoryRepository = routeHistoryRepository;
     }
 
     public RouteResponse optimizeRoute() {
@@ -65,6 +72,14 @@ public class RouteService {
 
         double fuelCost = totalDistance * fuelPerKm;
         double estimatedTime = totalDistance / avgSpeed;
+
+        RouteHistory history = new RouteHistory(
+                totalDistance,
+                fuelCost,
+                estimatedTime
+        );
+
+        routeHistoryRepository.save(history);
 
         return new RouteResponse(
                 optimizedRoute,
