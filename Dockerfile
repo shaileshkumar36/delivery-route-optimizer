@@ -2,11 +2,8 @@ FROM maven:3.9.6-eclipse-temurin-17
 
 WORKDIR /app
 
-COPY pom.xml .
-RUN mvn -B dependency:go-offline
+COPY . .
 
-COPY src ./src
+RUN mvn clean package
 
-RUN mvn clean package -DskipTests
-
-CMD ["java","-jar","target/*jar"]
+CMD ["sh","-c","java -jar target/*.jar"]
