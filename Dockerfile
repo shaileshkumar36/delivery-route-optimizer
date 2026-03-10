@@ -5,4 +5,4 @@ COPY . .
 
 RUN mvn clean package -DskipTests
 
-CMD ["java","-jar","target/route-optimizer-0.0.1-SNAPSHOT.jar"]
+CMD ["java","-jar","target/*.jar"]
